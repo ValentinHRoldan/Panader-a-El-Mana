@@ -1,0 +1,41 @@
+
+
+section div .card-header{
+    background-color: #d88d22;
+    color: white;
+  
+}
+
+.card{
+   
+    color: white;
+
+ 
+    
+}
+
+
+
+
+button[type="submit"]{
+    padding: 0.375rem 0.75rem ;
+    font-size: 1rem;
+    border-radius: 0.375rem;
+
+}
+
+
+
+footer{
+
+   
+    margin: 0px 100px 0px 100px;
+    align-content: center;
+}
+footer p{
+    color: white;
+    
+}
+a {
+    text-decoration: none;
+}

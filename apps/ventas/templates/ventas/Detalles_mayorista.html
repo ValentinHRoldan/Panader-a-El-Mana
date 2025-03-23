@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Productos por Venta</title>
+    {% extends 'base.html' %}
+    {% load static %}
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/ventas/detallesVenta.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ventas/tabla2.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    {% endblock css %}
+
+</head>
+<body>
+    {% block content %}
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg">
+            <div class="col text-center"> 
+                <div class="div_anular_venta">
+                    <p><b>DETALLES MAYORISTA</b></p>
+                </div>
+            </div>
+        </nav>
+            <br>
+        <main class="p-4"> 
+            <div class="tituloTabla">
+                <p><b>Cuit:</b></p>
+                <p>{{ mayorista.cuit }}</p>
+            </div>
+            <hr>
+            <div class="observaciones">
+                <p><b>Razon social:</b></p>
+                <p>{{ mayorista.razon_social }}</p>
+            </div>
+            <hr>
+            <div class="observaciones">
+                <p><b>Direccion:</b></p>
+                <p>{{ mayorista.direccion }}</p>
+            </div>
+            <hr>
+            <div class="observaciones">
+                <p><b>Telefono:</b></p>
+                <p>{{ mayorista.telefono }}</p>
+            </div>
+            <hr>
+            <div class="observaciones">
+                <p><b>Correo:</b></p>
+                <p>{{ mayorista.email }}</p>
+            </div>
+            <hr>
+            <div class="observaciones">
+                <p><b>Condicion de venta:</b></p>
+                <p>{{ mayorista.condicion_venta }}</p>
+            </div>
+            <hr>
+            <div class="row d-flex justify-content-between">
+                {% if not mayorista.estado %}
+                <div class="col text-start"> 
+                    <p><b>Estado: </b><span style="color: rgb(255, 0, 0);" id="estadoVenta"><b>Inactivo</b></span></p>
+                </div>
+                {% else %}
+                <div class="col text-start">
+                    <p><b>Estado: </b><span style="color: green;" id="estadoVenta"><b>Activo</b></span></p>
+                </div>
+                <div class="col text-end"> 
+                    <div class="div_anular_venta">
+                    <form action="" id="formulario_anular" class="needs-validation formulario" method="post">
+                        {% csrf_token %}
+                        <button id="btn_anularVenta" type="button" onclick="confirmCancel(`{}`)"><i class="fa-solid fa-trash fa-sm" style="color: #ffffff;" id="iconoBasura"></i>Dar de baja</button>
+                    </form>
+                    </div>
+                </div>
+                {% endif %}
+            </div>            
+        </main>
+    </div>
+    {% endblock %}
+    {% block js %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/static/scripts/gestion_ventas/script_tabla_mayoristas.js"></script>
+    {% endblock %}
+</body>
+</html>
+

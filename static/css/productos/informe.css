@@ -1,0 +1,74 @@
+html,body{
+    height: 100%;
+}
+
+
+body{
+    background-image: url("../../img/productos.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Ajusta el color y la opacidad según tus necesidades */
+    z-index: -1;
+}
+
+
+button[type="submit"]{
+    
+
+    border-color: #d88c2255;
+    background-color: #fc8213;
+}
+
+
+
+button:hover[type="submit"]{
+    background-color: #c44c0a;
+    border-color: #d88c2255;
+}
+
+#main{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.formulario__btn{
+    border-color: #d88c2255;
+    background-color: #fc8213;
+}
+
+@media print {
+    /* Ocultar todo lo que no es la tabla */
+
+    body * {
+        visibility: hidden;
+    }
+
+    /* Mostrar solo la tabla */
+    #tabla-productos, #tabla-productos * {
+        visibility: visible;
+    }
+
+    /* Asegurarse de que la tabla mantenga su posición */
+    #tabla-productos {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .table-title {
+        text-align: center;
+        margin: 0 auto;
+    }
+}

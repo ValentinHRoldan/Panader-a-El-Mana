@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Ventas - Panadería El Maná</title>
+    {% extends 'base.html' %}
+    {% load static %}
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/ventas/style_gestion_venta.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ventas/form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ventas/tabla2.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <style>
+        .table-input-container-list{
+            display: grid;
+            grid-template-columns: 0.4fr 0.4fr 0.4fr 0.3fr;
+        }
+        .formulario__input_list{
+            max-width: 250px;
+            width: 100%;
+            background: #fff;
+            border: 3px solid transparent;
+            border-radius: 3px;
+            height: 45px;
+            line-height: 45px;
+            padding: 0 40px 0 10px;
+            transition: .3s ease all;
+        }
+        
+        .table-buttons-list{
+            cursor: pointer;
+            height: 50px;
+            line-height: 20px;
+            max-width: 200px;
+            width: 100%;
+            color: black;
+            border: none;
+            border-radius: 8px;
+            transition: .1s ease all;
+            margin-top: 20px;
+           
+            margin-bottom: 10px;
+        }
+        .action-item-list{
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+
+        }
+        @media print {
+        /* Orientación horizontal */
+        @page {
+            size: tabloid landscape; /* Tamaño tabloid y orientación horizontal */
+            margin: 0; /* Ajustar márgenes según lo necesites */
+        }
+        body {
+            font-size: 12pt; /* Cambiar tamaño de fuente */
+            /* Otros estilos para impresión */
+        }
+}
+
+    </style>
+    {% endblock %}
+</head>
+
+<body>
+    {% block content %}
+    <main id="main">
+        <div class="card-header navbar-dark" style="display: flex">
+            <h1 class="h3 mb-0 formulario__label"style="color: #ffffff"></h1>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }} mensajes">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="table-container" id="tabla" style="text-align: center;">
+            <div class="table-title">Lista de Ventas</div>
+            <div class="table-input-container-list no-informe">
+                <div class="formulario__grupo" id="grupo__searchInputID">
+                    <label for="searchInputID" class="formulario__label">Comprobante</label>
+                    <div class="formulario__grupo-input">
+                        <input type="text" class="formulario__input_list" id="searchInputID" placeholder="Buscar por Comprobante" onkeyup="buscarVenta()">   
+                    </div>
+                </div>
+                <div class="formulario__grupo" id="grupo__fechaTablaMin">
+                    <label for="searchInputDateMin" class="formulario__label">Fecha Mínima</label>
+                    <div class="formulario__grupo-input">
+                        <input type="date" class="formulario__input_list" id="searchInputDateMin" placeholder="Fecha mínima">
+                    </div>
+                </div>
+                <div class="formulario__grupo" id="grupo__fechaTablaMax">
+                    <label for="searchInputDateMax" class="formulario__label">Fecha Máxima</label>
+                    <div class="formulario__grupo-input">
+                        <input type="date" class="formulario__input_list" id="searchInputDateMax" placeholder="Fecha máxima">                 
+                    </div>             
+                </div>
+                <div class="formulario__grupo" id="grupo__fechaTablaMax">
+                    <label for="tipoVenta_b" class="formulario__label">Tipo de venta</label>
+                    <div class="formulario__grupo-input">
+                        <select name="tipoVenta_b" id="tipoVenta_b" class="formulario__input_list">
+                            <option value="todas">Todas</option>
+                            <option value="MINORISTA">Mayorista</option>
+                            <option value="MAYORISTA">Minorista</option>
+                        </select>
+                    </div>             
+                </div>
+                <div class="formulario__grupo" id="grupo__fechaTablaMax">
+                    <label for="estadoVenta_b" class="formulario__label">Estado</label>
+                    <div class="formulario__grupo-input">
+                        <select name="estadoVenta_b" id="estadoVenta_b" class="formulario__input_list">
+                            <option value="todas">Todas</option>
+                            <option value="anulada" style="color: green; font-weight: bold;">Exitosa</option>
+                            <option value="exitosa" style="color: red; font-weight: bold;">Anulada</option>
+                        </select>            
+                    </div>             
+                </div>
+                <div class="formulario__grupo" id="grupo__buscarTabla">
+                    <label for="buscarTabla" class="formulario__label"></label>
+                  
+                        <button type="button" class="table-buttons-list" id="buscarTabla" onclick="buscarVenta()">Buscar</button>
+                    
+                </div>
+            </div>
+            <table style="width: max-content;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Numero de comprobante</th>
+                        <th>Fecha</th>
+                        <th>Observaciones</th>
+                        <th>Tipo de venta</th>
+                        <th>Tipo de comprobante</th>
+                        <th>Forma de pago</th>
+                        <th>Total</th>
+                        <th>Vendedor</th>
+                        <th>Estado</th>
+                        <th class="no-informe">Acción</th>
+                    </tr>
+                </thead>
+                <tbody class="tbody">
+                    {% for venta in ventas %}
+                    <tr>
+                        <td>{{ venta.id }}</td>
+                        <td>{{ venta.numeroComprobante }}</td>
+                        <td>{{ venta.FechaVenta }}</td>
+                        <td>{{ venta.observaciones }}</td>
+                        <td>{{ venta.tipo_venta }}</td>
+                        <td>{{ venta.tipo_comprobante }}</td>
+                        <td>{{ venta.forma_pago }}</td>
+                        <td>{{ venta.precioTotal }}</td>
+                        <td>{{ venta.username }}</td>
+                        {% if venta.estado %}
+                        <td style="color: green;"><b>EXITOSA</b></td>
+                        {% else %}
+                        <td style="color: red;"><b>ANULADA</b></td>
+                        {% endif %}
+                        <td class="action-item-list no-informe">
+                            <button type="button" class="action-button edit-button" data-id="{{ venta.id }}" data-comprobante="{{ venta.numeroComprobante }}">
+                                <i class="fa-regular fa-file-lines" style="color: #ffffff;" data-id="{{ venta.id }}" data-comprobante="{{ venta.numeroComprobante }}"></i>
+                            </button>
+                            {% if perms.ventas.delete_venta %}
+                            {% if venta.estado %}
+                            <form action="" id="formulario_anular" class="needs-validation formulario" method="post">
+                                {% csrf_token %}
+                                <button type="button" class="action-button delete-button" onclick="confirmCancel(`{% url 'ventas:anular_venta' venta.id %}`)">
+                                    <i class="fa-solid fa-trash fa-sm" style="color: #ffffff;"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="total-row" id="foot-tr">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="no-informe"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </main>
+    <div style="text-align: center; margin-top: 10%;">
+        <a href="{% url 'ventas:informe_ventas_pdf' %}" class="btn btn-warning">Descargar Informe PDF</a>
+        <!-- <input type="button" value="GENERAR INFORME" id="btnGenerarInforme" class="btn btn-warning"> -->
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'scripts/gestion_ventas/script_tabla_ventas.js' %}"></script>
+    {% endblock %}
+</body>
+
+</html>
+

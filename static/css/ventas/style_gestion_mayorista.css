@@ -1,0 +1,163 @@
+html,body{
+    height: 100%;
+}
+
+
+body{
+    background-image: url("../../img/gestion_ventas/weuqwpzkyrs1vqzzyvbt.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+
+section div .card-header{
+    background-color: #d88d22;
+    color: white;
+  
+}
+
+
+button[type="submit"] {
+    text-align: center;
+    border-color: #d88c2255;
+    background-color: #fc8213;
+    padding: 10px 20px;
+    margin: 0 auto;
+    display: block;
+}
+
+
+
+button:hover[type="submit"]{
+    background-color: #c44c0a;
+    border-color: #d88c2255;
+
+}
+
+
+
+button:active[type="submit"]{
+    background-color: #7d3311;
+    border-color: #d88c2255;
+
+}
+
+
+h1{
+    margin-left: 3.2rem;
+}
+
+.form-container {
+    display: grid;
+    margin-left: 3.2rem; /* Centra el contenedor horizontalmente */
+}
+
+
+
+.form-background{
+    border-style: groove;
+    border-color: #fc8213;
+    width: 600px;
+}
+
+.desactivado{
+    display: none;
+}
+
+
+input:not(#correo):invalid{
+    border-color: red;
+    border-radius: 5px;
+}
+
+input:not(#correo):valid{
+    border-color: rgb(4, 255, 4);
+    border-radius: 5px;
+}
+
+
+/* Media query para resoluciones más pequeñas */
+@media (max-width: 1306px) {
+    h1{
+        transform: translate(35%, 0px);    
+    }
+
+
+    .form-container .form-background:nth-child(3) {
+        grid-column: span 1; /* Hace que ocupe solo una columna */
+        justify-self: stretch; /* Alinea el div al ancho completo */
+    }
+    .formulario__btn{
+        transform: translateX(-50px);
+    }
+}
+
+@media (max-width: 800px){
+    .formulario__btn{
+        transform: translateX(10px);
+    }    
+}
+
+@media (max-width: 755px) {
+
+    .form-container {
+        gap: 10px; /* Reduce el espacio entre los div */
+    }
+
+    .form-background {
+        padding: 10px;
+        width: 100%; /* Ocupa el 100% del ancho */
+    }
+
+    .form-background .formulario__input,
+    .form-background select,
+    .form-background input,
+    .form-background button {
+        font-size: 14px; 
+        padding: 8px;
+    }
+
+    /*tamaño de los íconos*/
+    .form-background .formulario__validacion-estado {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 490px){
+    .form-background input[type="date"]{
+        transform: translateY(24px);        
+    }
+}
+
+@media (max-width: 435px) {
+    .form-container {
+        gap: 5px; 
+    }
+
+    .form-background {
+        padding: 5px;
+        width: 100%; 
+    }
+
+
+    .form-background .formulario__input,
+    .form-background select,
+    .form-background input,
+    .form-background button {
+        font-size: 12px; 
+        padding: 2px; 
+    }
+
+   
+    .form-background .formulario__validacion-estado {
+        font-size: 6px;
+    }
+
+    label,p{
+        font-size: small;
+    }
+    .form-background input[type="date"]{
+        transform: translateY(-2px);        
+    }
+}

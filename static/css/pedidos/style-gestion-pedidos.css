@@ -1,0 +1,133 @@
+html,body{
+    height: 100%;
+}
+
+
+body{
+    background-image: url("../../img/pedidos/pedidos.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+ 
+  
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Ajusta el color y la opacidad según tus necesidades */
+    z-index: -1;
+}
+
+
+section div .card-header{
+    background-color: #d88d22;
+    color: white;
+  
+}
+
+
+button[type="submit"]{
+    
+
+    border-color: #d88c2255;
+    background-color: #fc8213;
+}
+
+
+
+button:hover[type="submit"]{
+    background-color: #c44c0a;
+    border-color: #d88c2255;
+
+}
+
+
+
+button:active[type="submit"]{
+    background-color: #7d3311;
+    border-color: #d88c2255;
+
+}
+
+button[class="btn-modificar"][type="button"]{
+    
+    padding: 0.375rem 0.75rem ;
+    border-color: #84898e;
+    background-color: #84898e;
+}
+
+
+
+button:hover[class="btn-modificar"][type="button"]{
+    background-color: rgb(92, 92, 92);
+    border-color: #d88c2255;
+
+}
+
+
+
+button[class="btn-modificar"][type="button"]:active{
+    background-color: #474747;
+    border-color: #d88c2255;
+
+}
+.btn-modificar{
+    height: 50px;
+	line-height: 20px;
+    max-width: 200px;
+	width: 100%;
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	transition: .1s ease all;
+    margin-right: 100px;
+    
+}
+
+#main{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}
+
+.hidden-fields-container{
+    display: none;
+}
+
+button[class="btn-cancelar"]{
+    border-color: #84898e;
+    background-color: #84898e;
+    display:block;
+    color: white;
+    text-align: center;
+    max-width: 200px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    line-height: 45px;
+	padding: 0 40px 0 10px;
+	transition: .3s ease all;
+    
+
+}
+button[class="btn-cancelar"]:hover {
+    background-color: rgb(92, 92, 92);
+    border-color: #d88c2255;
+}
+
+button[class="btn-cancelar"]:active{
+    background-color: #474747;
+    border-color: #d88c2255;
+}
+
+button[class="btn-cancelar"]{
+    max-width: auto;
+    margin-top: 59%;
+    
+    margin-left: 80%;
+}

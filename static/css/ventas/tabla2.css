@@ -1,0 +1,156 @@
+body {
+    font-family: 'Roboto', sans-serif;
+  
+}
+
+.table-container {
+    max-width: max-content;
+    margin-top: 50px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+
+    
+}
+.table-title {
+   
+    color: white;
+    padding-bottom: 15px;
+   
+    font-size: 20px;
+    font-weight: bold;
+}
+table {
+    max-width: 1200px;
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+
+}
+th {
+    background-color: #3d2f2f;
+    color: white;
+}
+tr:nth-child(even) {
+    background-color: #d9d6d1;
+    color: #fc8213;
+}
+tr:nth-child(odd) {
+    background-color: #ffffff;
+    color: black;
+}
+#foot-tr{
+    text-align: center;
+    background-color: #3d2f2f;
+    color: white;
+}
+.action-buttons {
+    
+    gap: 20px;
+}
+div .action-button{
+    text-align: center;
+
+    width: 25px;
+    height: 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-size: 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+
+}
+.edit-button {
+    background-color: #3498db;
+}
+.delete-button {
+    background-color: #b92c31;
+}
+.save-button{
+    background-color: #0e0e0e;
+}
+
+.total-row td {
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+
+}
+@media screen and (max-width: 600px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    tr {
+        margin-bottom: 15px;
+    }
+    td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+    }
+    td:before {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        content: attr(data-label);
+        font-weight: bold;
+    }
+    .action-buttons {
+        justify-content: flex-end;
+    }
+    .total-row td:before {
+        content: none;
+    }
+    .total-row td {
+        text-align: center;
+    }
+}
+
+
+
+
+.table-buttons{
+    cursor: pointer;
+  
+	height: 50px;
+	line-height: 20px;
+	max-width: 200px;
+	width: 100%;
+	color: black;
+	border: none;
+	border-radius: 8px;
+	transition: .1s ease all;
+	margin-right: 10px;
+    margin-bottom: 10px;
+    
+}
+
+.btn-accion{
+    display: flex;
+    gap: 30px;
+
+}
+
+.table-input-container{
+    display: grid;
+    grid-template-columns: 0.3fr 0.3fr 0.3fr;
+    gap: 25px;
+    
+}
+
+#add-form {
+    margin-top: 20px;
+    margin-left: 250px;
+     /* Espacio superior específico para el botón */
+}

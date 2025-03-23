@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de ventas - Panadería El Maná</title>
+    {% extends 'base.html' %}
+    {% load static %}
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/ventas/style_gestion_venta.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_gestion.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ventas/form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ventas/tabla2.css' %}">
+    {% endblock %}
+</head>
+{% block content %}
+<body>
+    <main id="main">
+		<form method="POST" class="formulario" id="formulario">
+            {% csrf_token %}
+            <input type="hidden" name="id_usuario" value="{{ id_usuario }}">
+            <div class="card-header navbar-dark ">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }} mensajes">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <h1 class="h3 mb-0 formulario__label"style="color: #ffffff">Venta</h1>
+            </div>
+            <div class="form-container">
+                <div class="form-background">
+                    <!-- Grupo: tipo venta (minorista / mayorista) -->
+                    <div class="formulario__grupo" id="grupo__numeroPedido">
+                        <label for="numeroPedido" class="formulario__label">Tipo de venta</label>
+                        <div class="formulario__grupo-input">
+                            {{ formVenta.tipo_venta }}
+                            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                        </div>
+                    </div>
+    
+                    <!-- Grupo: Fecha -->
+                    <div class="formulario__grupo" id="grupo__fechaSolicitud">
+                        <label for="fechaSolicitud" class="formulario__label">Fecha De Venta</label>
+                        <div class="formulario__grupo-input">
+                            {{ formVenta.FechaVenta }}
+                            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                        </div>
+                        <p class="formulario__input-error">Fecha incorrecta.</p>
+                    </div>
+    
+    
+                    <!-- Grupo: tipo comprobante -->
+                    <div class="formulario__grupo" id="grupo__proveedor">
+                        <label for="proveedor" class="formulario__label">Tipo De Comprobante</label>
+                        <div class="formulario__grupo-input">
+                            {{ formVenta.tipo_comprobante }}
+                            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                        </div>
+                        <p class="formulario__input-error">Ingrese un proveedor.</p>
+                    </div>
+                           
+                    <div class="formulario__grupo mayorista" id="divMayorista">
+                        <label for="numeroComprobante" class="formulario__label" style="color:white;">Nombre del mayorista</label>
+                        <div class="formulario__grupo-input">
+                            {{ formVenta.mayorista }}
+                        </div>
+                        <input type="hidden" name="cuitMayorista">
+                    </div> 
+                    <div class="formulario__mensaje" id="formulario__mensaje">
+                        <p><i class="fas fa-exclamation-triangle"></i> <b>Error:</b> Por favor rellena el formulario correctamente. </p>
+                    </div>
+                    <div class="formulario__mensaje-exito" id="formulario__mensaje-exito">
+                        <p><i class="fas fa-exclamation-triangle"></i> Formulario enviado exitosamente!</p>
+                    </div>
+                </div>	
+                <div class="form-background">
+                    <!-- Grupo: nro comprobante -->
+                    <div class="formulario__grupo" id="grupo__numeroPedido">
+                        <label for="numeroPedido" class="formulario__label">Nro De Comprobante</label>
+                        <div class="formulario__grupo-input">
+                             {{ formVenta.numeroComprobante }}
+                            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                        </div>
+                    </div>
+    
+                    <!-- Grupo: Forma de pago -->
+                    <div class="formulario__grupo" id="grupo__insumo">
+                        <label for="insumo" class="formulario__label">Forma De Pago</label>
+                        <div class="formulario__grupo-input">
+                            {{ formVenta.forma_pago }}
+                            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                        </div>
+                        <p class="formulario__input-error">seleccione un insumo.</p>
+                    </div>
+    
+                    <!-- Grupo: observaciones -->
+                    <div class="formulario__grupo" id="grupo__observaciones">
+                        <label for="observaciones" class="formulario__label">Observaciones</label>
+                        <div class="formulario__grupo-input">
+                            {{ formVenta.observaciones }}
+                            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                        </div>
+                        <p class="formulario__input-error">Solo se permiten el ingreso de caracteres.</p>
+                    </div>
+               
+                    <div class="formulario__mensaje" id="formulario__mensaje">
+                        <p><i class="fas fa-exclamation-triangle"></i> <b>Error:</b> Por favor rellena el formulario correctamente. </p>
+                    </div>
+                    <div class="formulario__mensaje-exito" id="formulario__mensaje-exito">
+                        <p><i class="fas fa-exclamation-triangle"></i> Formulario enviado exitosamente!</p>
+                    </div>
+                </div>
+                {{ formset.management_form }}
+                <div id="formset-container">
+                    <div class="form-background grupoProducto" style="display: flex;">
+                        {% for form in formset %}
+                        <!-- Grupo: Producto -->
+                        <div class="formulario__grupo" id="grupo__producto">
+                            <label for="numeroPedido" class="formulario__label">Producto</label>
+                            <div class="formulario__grupo-input">
+                                <div class="formulario__grupo-input">
+                                    {{ form.producto }}
+                                    <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                                </div>
+                                <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                            </div>
+                        </div>
+        
+                        <!-- Grupo: Precio -->
+                        <div class="formulario__grupo" id="grupo__precio">
+                            <label for="cantidad" class="formulario__label">Precio</label>
+                            <div class="formulario__grupo-input">
+                                {{ form.precioActual }}
+                                
+                                <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                            </div>
+                            <p class="formulario__input-error">Ingrese solamente numeros.</p>
+                        </div>
+        
+                        <!-- Grupo: cantidad -->
+                        <div class="formulario__grupo" id="grupo__cantidad">
+                            <label for="cantidad" class="formulario__label">Cantidad</label>
+                            <div class="formulario__grupo-input">
+                                {{ form.cantidad }}
+                                {{ form.subtotal }}
+                                <span id="spanCantMaxima"></span>
+                                <br>
+                                <span id="spanCantidadInvalida" class="spanValidacion"></span>
+                            </div>
+
+                            <p class="formulario__input-error">Ingrese solamente numeros.</p>
+                        </div>
+                        <button class="btn btn-danger ocultar" id="btnEliminarProducto">Eliminar Producto</button>  
+                        {{ form.DELETE }}                      
+                    </div>
+                    
+                    {% endfor %}             
+                    <div>
+                        <p><span id="spanProductoForm" class="spanValidacion"></span></p>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <div id="centrarInput">
+                <p><span>TOTAL</span>{{ formVenta.precioTotal }}</p>
+            </div>
+            
+            <br><br><br>
+			<div class="formulario__grupo formulario__grupo-btn-enviar">
+				<button id="addProducto" class="formulario__btn"><i class="fa-solid fa-plus me-2"></i>Agregar producto</button>
+			</div>
+            <br><br>            
+			<div class="formulario__grupo formulario__grupo-btn-enviar">
+				<button type="submit" class="formulario__btn"><i class="fa-solid fa-hand-holding-dollar me-2"></i>Registrar Venta</button>
+			</div>
+            
+		</form>
+    
+        </div>
+	</main>
+    
+    <footer class="py-1 mt-8 fixed-bottom">
+        <div class="card-footer container text-center">
+            <p class=" mb-0">&copy; 2024 Panadería El Mana. Todos los derechos reservados.</p>
+        </div>
+
+    </footer>
+
+    {% endblock%}
+    {% block js %}
+    <script src="{% static 'scripts/gestion_ventas/script_ventas.js' %}"></script>
+    <script src="{% static 'scripts/gestion_ventas/script_ventas_productos.js' %}"></script>
+    {% endblock %}   
+</body>
+</html>

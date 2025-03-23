@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos - Panadería El Maná</title>
+    {% extends 'base.html' %}
+    {% load static %}
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/pedidos/style-gestion-pedidos.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'css/pedidos/form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pedidos/tabla.css' %}">
+   
+    {% endblock %}
+</head>
+
+<body>
+    {% block content %}
+    <main id="main">
+        {% if perms.pedidos.add_pedido %}
+		<form action="" class="formulario" id="formulario" method="post">
+            {% csrf_token %}
+
+            <div class="card-header navbar-dark ">
+
+                <h1 class="h3 mb-0 formulario__label"style="color: #ffffff">Pedido</h1>
+            </div>
+            <div class="form-background">
+                    <!-- Grupo: numeroPedido -->
+                    <div class="formulario__grupo" id="grupo__numeroPedido">
+                        <label for="numeroPedido" class="formulario__label">Nro de pedido</label>
+                        <div class="formulario__grupo-input">
+                            <input type="number" class="formulario__input" name="numeroPedido" id="numeroPedido" placeholder="#2123" disabled>
+                            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                        </div>
+                    </div>
+
+                    <!-- Grupo: Fecha -->
+                <div class="formulario__grupo" id="grupo__fechaSolicitud">
+                    <label for="id_fecha_pedido" class="formulario__label">Fecha</label>
+                    <div class="formulario__grupo-input">
+                        {{ formPedido.fecha_pedido}}
+                        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                    </div>
+                    <p class="formulario__input-error">Fecha incorrecta.</p>
+                </div>
+                    
+
+                    <!-- Grupo: Proveedor -->
+                    <div class="formulario__grupo" id="grupo__proveedor">
+                        <label for="proveedor" class="formulario__label">Proveedor</label>
+                        <div class="formulario__grupo-input">
+                            {{ formPedido.proveedor }}
+
+                            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                        </div>
+                        <p class="formulario__input-error">Ingrese un proveedor.</p>
+                    </div>
+
+                    <div class="formulario__grupo" id="grupo__observaciones">
+                        <label for="observaciones" class="formulario__label">Observaciones</label>
+                        <div class="formulario__grupo-input">
+                            {{ formPedido.observaciones }}
+                            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                        </div>
+                        <p class="formulario__input-error">Solo se permiten el ingreso de caracteres.</p>
+                    </div>
+                    
+                
+                    <div>
+                        <div class="formulario__mensaje" id="formulario__mensaje">
+                            <p><i class="fas fa-exclamation-triangle"></i><b>Error:</b>Rellena el formulario correctamente. </p>
+                        </div>
+                        <div class="formulario__mensaje-exito" id="formulario__mensaje-exito">
+                            <p><i class="fas fa-exclamation-triangle"></i> Formulario enviado exitosamente!</p>
+                        </div>
+                    </div>
+                    
+            </div>
+            {{ formset.management_form }}
+            {% for form in formset %}
+            <div class="hidden-fields-container" id="formset-container" >
+                
+                <div class="insumos-form ">
+                    {{form}}
+                </div>
+                {% endfor %}
+
+            </div>
+            <div class="formulario__grupo formulario__grupo-btn-enviar">
+				<button type="submit" class="formulario__btn"><i class="bi bi-send me-2"></i>Guardar Pedido</button>
+                <button type="button" class="btn-modificar" hidden><i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i> Modificar Pedido</button>
+              
+			</div>
+
+		</form>
+
+        <div class="table-container" id="tableContainer" >
+            <div class="table-input-container" id="tabla" >
+                    <div class="formulario__grupo" id="grupo__insumo_tabla">
+                        <label for="insumo_tabla" class="formulario__label">Insumo</label>
+                        <div class="formulario__grupo-input">
+                            <select class="formulario__input tabla__input" id="insumo_tabla" name="insumo_tabla" required>
+                                <option value>Seleccione</option>
+                                {% for insumo in insumos %}
+                                    <option value="{{ insumo.id }}" data-unidadmedida="{{ insumo.unidad_medida }}">{{ insumo.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                        </div>
+                        <p class="formulario__input-error">seleccione un insumo.</p>
+                    </div>
+                    <div class="formulario__grupo" id="grupo__unidad_tabla">
+                        <label for="unidad_tabla" class="formulario__label">Unidad</label>
+                        <div class="formulario__grupo-input">
+                            <select class="formulario__input tabla__input" id="unidad_tabla" name="unidad_tabla" required>
+                            </select>                            
+                        </div>
+                        <p class="formulario__input-error">seleccione una unidad de medida.</p>
+                    </div>
+                    <div class="formulario__grupo" id="grupo__cantidad_tabla">
+                        <label for="cantidad_tabla" class="formulario__label">Cantidad</label>
+                        <div class="formulario__grupo-input">
+                            <input type="number" class="formulario__input tabla__input" name="cantidad_tabla" id="cantidad_tabla" >
+                            <i class="formulario__validacion-estado fas fa-times-circle" ></i>
+                        </div>
+                        <p class="formulario__input-error">Ingrese solamente numeros.</p>
+                    </div>
+                    <div class="formulario__grupo" id="grupo__agrear_insumo">
+                        <label class="formulario__label"></label>
+                        <div class="formulario__grupo-input">
+                            <button type="button" class="table-buttons" id="add-form">Agregar Insumo</button>
+                            <p class="formulario__input-error">seleccione un insumo.</p>
+
+                        </div>
+                    </div>
+            </div>
+
+            <table >
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Insumo</th>
+                        <th>Cantidad</th>
+                        <th>Unidad de Medida</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody class="tbody">
+                    
+
+                </tbody>
+                <tfoot>
+                    
+                    <tr class="total-row" id="foot-tr">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>       
+                    </tr>
+                </tfoot>
+    
+    
+            </table>
+            
+    
+        </div>
+     
+        {% endif %}
+	</main>
+    {% endblock %}
+    {% block js %}<script src="{% static 'scripts/gestion_pedidos/Registro-gestion-pedidos.js'%}"></script>{% endblock %}
+</body>
+</html>

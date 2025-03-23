@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Productos por Venta</title>
+    {% extends 'base.html' %}
+    {% load static %}
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/ventas/detallesVenta.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ventas/tabla2.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        .fondo-seccion {
+            background-color: #0000005c;
+            padding: 20px;
+            border-radius: 5px;
+            color: rgb(255, 255, 255);
+        }
+    </style>
+    {% endblock css %}
+
+</head>
+<body>
+    {% block content %}
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <p class="nav-link" style="color: white;"><b>ID Venta:</b> {{ venta_productos.0.id }}</p>
+                  </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                      <p class="nav-link" style="color: white;"><b>Numero de comprobante:</b> {{ venta_productos.0.numeroComprobante }}</p>
+                    </li>
+                  </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-2">
+                        <p class="nav-link " style="color: white;"><b>Fecha:</b> {{ venta_productos.0.FechaVenta }}</p>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <br>
+        <main class="p-4"> 
+            <div class="fondo-seccion">
+                <div class="container">
+                    <div class="row d-flex justify-content-between">
+                        <div class="col text-start"> 
+                            <p><b>Tipo de venta:</b></p>
+                            <p>{{ venta_productos.0.tipo_venta }}</p>
+                        </div>
+                        <div class="col text-center">
+                            <p><b>Tipo de comprobante:</b></p>
+                            <p>{{ venta_productos.0.tipo_comprobante }}</p>
+                        </div>
+                        <div class="col text-end"> 
+                            <p><b>Forma de pago:</b></p> 
+                            <p>{{ venta_productos.0.forma_pago }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           
+           
+            {% if venta_productos.0.tipo_venta == 'MAYORISTA' %}
+                <hr><br><hr>
+                
+                <div class="fondo-seccion">
+                    <p style="text-align: center;"><b>DATOS DEL MAYORISTA</b></p>
+                    <div class="container">
+                        <div class="row d-flex justify-content-between">
+                            <div class="col text-start"> 
+                                <p><b>CUIT:</b></p>
+                                <p>{{ venta_productos.0.itemmayorista__mayorista_cuit__cuit }}</p>
+                            </div>
+                            <div class="col text-center"> 
+                                <a href="#" class="btn-mayorista" id="btnMay" data-cuit="{{ venta_productos.0.itemmayorista__mayorista_cuit__cuit }}">Ver más detalles</a>
+                            </div>
+                            <div class="col text-end"> 
+                                <p><b>RAZON SOCIAL:</b></p>
+                                <p>{{ venta_productos.0.itemmayorista__mayorista_cuit__razon_social }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            {% endif %}
+            <br>
+            <hr>
+
+            <div class="fondo-seccion">
+                <div class="tituloTabla">
+                    <b>Productos:</b>
+                </div>
+            
+                <div class="tablaProductos">
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>ID Producto</th>
+                                <th>Producto</th>
+                                <th>Categoria</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ventap in venta_productos %}
+                                <tr>
+                                    <td>{{ ventap.itemproducto__producto_id }}</td>
+                                    <td>{{ ventap.itemproducto__producto__descripcion }}</td>
+                                    <td>{{ ventap.itemproducto__producto__categoria }}</td>
+                                    <td>{{ ventap.itemproducto__precioActual }}</td>
+                                    <td>{{ ventap.itemproducto__cantidad }}</td>
+                                    <td>{{ ventap.itemproducto__subtotal }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot class="total-row" id="foot-tr">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><b>TOTAL: </b></td>
+                            <td><b>{{ venta_productos.0.precioTotal }}</b></td>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <hr>
+            <br>
+            <hr>
+            <div class="fondo-seccion">
+                <div class="observaciones">
+                    <p><b>Observaciones:</b></p>
+                    <textarea readonly>{{ venta_productos.0.observaciones }}</textarea>
+                </div>
+            </div>
+            <hr>
+            <br>
+            <hr>
+            <div class="fondo-seccion">
+            <div class="container">
+            <div class="row d-flex justify-content-between">
+                <p style="text-align: center;"><b>Datos del vendedor</b></p>
+                <div class="col text-start">
+                    <p><b>Username:</b></p>
+                    <p>{{venta_productos.0.itemusuario__usuario__username}}</p>
+                </div>
+                <div class="col text-center"> 
+                    <p><b>Cuit:</b></p>
+                    <p>{{venta_productos.0.itemusuario__usuario__cuit}}</p>
+                </div>
+                <div class="col text-end"> 
+                    <p><b>Email: </b></p>
+                    <p>{{venta_productos.0.itemusuario__usuario__email}}</p>
+                </div>
+            </div>
+            </div>
+            </div>
+            <hr><br>          
+            <div class="row d-flex justify-content-between">
+                {% if not venta_productos.0.estado %}
+                <div class="col text-start"> 
+                    <p><b>Estado de venta: </b><span style="color: rgb(255, 0, 0);" id="estadoVenta"><b>ANULADA</b></span></p>
+                </div>
+                {% else %}
+                <div class="col text-start">
+                    <p><b>Estado de venta: </b><span style="color: green;" id="estadoVenta"><b>EXITOSA</b></span></p>
+                </div>
+                <div class="col text-end"> 
+                    <div class="div_anular_venta">
+                    {% if perms.ventas.delete_venta %}
+                    <form action="" id="formulario_anular" class="needs-validation formulario" method="post">
+                        {% csrf_token %}
+                        <button id="btn_anularVenta" type="button" onclick="confirmCancel(`{% url 'ventas:anular_venta' venta_productos.0.id %}`)"><i class="fa-solid fa-trash fa-sm" style="color: #ffffff;" id="iconoBasura"></i>Anular venta</button>
+                    </form>
+                    {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>            
+        </main>
+    </div>
+    {% endblock %}
+    {% block js %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/static/scripts/gestion_ventas/script_detalles.js"></script>
+    <script>
+        const $btnMayorista = document.getElementById("btnMay");
+        $btnMayorista.addEventListener("click", function(e){
+            window.location.href = `mayoristas/detalles/${$btnMayorista.dataset.cuit}`;
+        })
+    </script>
+    {% endblock %}
+</body>
+</html>
+

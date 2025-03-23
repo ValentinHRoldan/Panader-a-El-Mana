@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Gestión de Productos</title>
+        {% extends 'base.html' %}
+        {% load static %}
+        {% block css %}
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="{% static 'css/productos/tabla.css' %}">
+        <link rel="stylesheet" href="{% static 'css/productos/style_gestion_productos.css' %}">
+        <link rel="stylesheet" href="{% static 'css/productos/form.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        
+        {% endblock %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </head>
+    {% block content %}
+    <body>
+
+        <main id="main">
+            {% if perms.productos.add_producto and perms.productos.change_producto and perms.productos.delete_producto %}
+            <form id="formulario" class="needs-validation formulario" method="post">
+            {% csrf_token %}
+                <div class="card-header navbar-dark" style="display: flex">
+                    <h1 class="h3 mb-0 formulario__label"style="color: #ffffff">Producto</h1>
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li class="{{ message.tags }} mensajes">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form-container">
+                    <div class="form-background">
+
+                        <div class="formulario__grupo" id="grupo__descripcion">
+                            <label for="desc_producto" class="formulario__label">Descripción del producto</label>
+                            <div class="formulario__grupo-input">
+                                {{ form.descripcion}}
+                                {% for error in form.descripcion.errors %}
+                                    <div class="error"><p>Ingresa una descripcion válida</p></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="formulario__grupo" id="grupo__categoria">
+                            <label for="categoria_panificacion" class="formulario__label">Categoria de producto</label>
+                            <div class="formulario__grupo-input">
+                                {{form.categoria}}
+                                {% for error in form.categoria.errors %}
+                                    <div class="error"><p>Ingresa una categoria</p></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="formulario__grupo" id="grupo__precioProducto">
+                            <label for="costo_producto" class="formulario__label">Precio del producto</label>
+                            <div class="formulario__grupo-input">
+                                {{ form.precio}}
+                                {% for error in form.precio.errors %}
+                                    <div class="error"><p>Ingresa un precio válido</p></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="formulario__grupo" id="grupo__precioProducto">
+                            <label for="cant_producto" class="formulario__label">Cantidad disponible</label>
+                            <div class="formulario__grupo-input">
+                                {{ form.cantidad}}
+                                {% for error in form.cantidad.errors %}
+                                    <div class="error"><p>Ingresa una cantidad válida</p></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="formulario__grupo" id="grupo__precioProducto">
+                            <label for="cantidad_minima_producto" class="formulario__label">Cantidad minima</label>
+                            <div class="formulario__grupo-input">
+                                {{ form.cantidad_minima}}
+                                {% for error in form.cantidad_minima.errors %}
+                                    <div class="error"><p>Ingresa una cantidad válida</p></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="formulario__grupo" id="grupo__precioProducto">
+                            <label for="unidad_medida" class="formulario__label">Unidad de medida</label>
+                            <div class="formulario__grupo-input">
+                                {{ form.unidad_medida}}
+                                {% for error in form.unidad_medida.errors %}
+                                    <div class="error" style="color: red;"><p>Ingresa una unidad válida</p></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="formulario__grupo formulario__grupo-btn-enviar">
+                    <button type="submit" name="Editar" id="boton_editar" class="formulario__btn">
+                    <i class="fa-solid fa-pen-to-square fa-sm me-2"></i>Editar
+                    </button>
+                </div>
+            </form>
+
+            <div class="table-container" id="tableContainer">
+                <div class="table-title">Lista de Productos</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>U. Medida</th>
+                            <th>Categoria</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tbody">
+                        {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.descripcion }}</td>
+                            <td>{{ producto.precio }}</td>
+                            <td>{{ producto.cantidad }}</td>
+                            <td>{{ producto.unidad_medida }}</td>
+                            <td>{{ producto.categoria }}</td>
+                            <td class="action-item-list">
+                                <button class="action-button edit-button"><a href="{% url 'productos:editar_productos' producto.id %}" style="color: white;">
+                                    <i class="fas fa-edit" style="color: white;"></i></button>
+                                    </a>
+                                <form action="" id="formulario_eliminar" class="needs-validation formulario" method="post">
+                                    {% csrf_token %}
+                                    <button type="button" class="action-button delete-button"  onclick="confirmCancel(`{% url 'productos:eliminar_productos' producto.id %}`)"><i class="fas fa-trash-alt" style="color: #ffffff;"></i></button>
+                                </form>
+                            </td>       
+                        </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                    <tfoot>          
+                        <tr class="total-row" id="foot-tr">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot> 
+                </table>
+            </div>
+            {% endif %}
+
+        </main>
+
+        {% endblock %}
+
+        {% block js %}
+        <script src="{% static 'scripts/Validacion-ModificacionProductos.js'%}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        {% endblock %}
+    </body>
+</html>

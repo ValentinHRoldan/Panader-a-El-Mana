@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos - Panadería El Maná</title>
+    {% extends 'base.html' %}
+    {% load static %}
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/pedidos/style-gestion-pedidos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pedidos/form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pedidos/tabla.css' %}">
+   
+    {% endblock %}
+</head>
+
+<body>
+    {% block content %}
+    <main id="main">
+        {% if perms.pedidos.change_recepcionpedidos and perms.pedidos.add_recepcionpedidos %}
+        <form action="" class="formulario" id="formulario" method="POST" >
+            {% csrf_token %}
+            <div  class="form-background">
+                <div class="formulario__grupo" id="grupo__numeroPedido">
+                    <label for="numeroPedido" class="formulario__label">Nro de pedido</label>
+                    <div class="formulario__grupo-input">
+                        <input type="number" class="formulario__input" name="numeroPedido" id="numeroPedido" value="{{pedido.id}}" disabled>
+                        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                    </div>
+                </div>
+                <div class="formulario__grupo" id="grupo__observaciones">
+                    <label for="observaciones" class="formulario__label">Observaciones</label>
+                    <div class="formulario__grupo-input">
+                        {{ form.observacion }}
+                        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                    </div>
+                    <p class="formulario__input-error">Solo se permiten el ingreso de caracteres.</p>
+                </div>
+                <div class="formulario__grupo" id="grupo__conformidad">
+                    <label for="id_conformidad" class="formulario__label">Conformidad</label>
+                    <div class="formulario__grupo-input input-conformidad">
+                        {{ form.conformidad }}
+                        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                    </div>
+                    <p class="formulario__input-error">Solo se permiten el ingreso de caracteres.</p>
+                </div>
+                <div class="formulario__grupo hidden-fields-container" id="grupo__precioTotal">
+                    <label for="precioTotal" class="formulario__label">Precio total</label>
+                    <div class="formulario__grupo-input">
+                        {{ form.precio_total }}
+                        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                    </div>
+                    <p class="formulario__input-error">Solo se permiten el ingreso de caracteres.</p>
+                </div>
+                <div class="formulario__mensaje" id="formulario__mensaje">
+                    <p><i class="fas fa-exclamation-triangle"></i> <b>Error:</b> Por favor rellena el formulario correctamente. </p>
+                </div>
+                <div class="formulario__mensaje-exito" id="formulario__mensaje-exito">
+                    <p><i class="fas fa-exclamation-triangle"></i> Recepcion enviada exitosamente!</p>
+                </div>
+            
+            </div>
+            {{ formset.management_form }}
+            <div class="hidden-fields-container" id="formset-container">
+                {% for form in formset %}
+                <div class="insumos-form">
+                    {{ form }}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="formulario__grupo formulario__grupo-btn-enviar">
+                <button type="submit" class="formulario__btn"><i class="bi bi-send me-2"></i>Recepcionar Pedido</button>
+            </div>
+           
+        </form>
+        
+        
+        <div class="table-container" id="tableContainer"> 
+            <div class="table-title">Lista de insumos</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Insumo</th>
+                        <th>Cantidad</th>
+                        <th>Unidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Precio por cantidad</th>
+                    </tr>
+                </thead>
+                <tbody class="tbody">
+                    
+                </tbody>
+                <tfoot>
+                    <tr class="total-row" id="foot-tr">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>TOTAL:</td>
+                        <td>123</td>
+                           
+                    </tr>
+                </tfoot>
+            </table>
+            
+        </div>
+        {% endif %}
+    </main>
+    {% endblock %}
+    {% block js %}
+
+    <script src="{% static 'scripts/gestion_pedidos/Recepcion-pedidos.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

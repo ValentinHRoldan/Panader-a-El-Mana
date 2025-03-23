@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Panaderia El Maná</title>
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+</head>
+<body>
+    <div class="container">
+        <div class="login-container">
+            <div class="form-background">
+                <h2 style="color: #3c3533;">Iniciar Sesión</h2>
+                <p style="color: #3c3533;">Bienvenido! Inicia sesión para acceder a nuestro sistema de gestión.</p>
+                {% if msj%}
+                <div>{{ msj}}</div>
+                {% endif%}
+                <form id="formulario" class="formulario" method="POST">
+                    {% csrf_token %}
+                    <div class="formulario__grupo">
+                        <label for="usuario" class="formulario__label">Nombre de Usuario</label>
+                        <div class="formulario__grupo-input">
+                            <input type="text" class="formulario__input" name="username" id="username" required>
+                        </div>
+                    </div>
+                    <div class="formulario__grupo">
+                        <label for="password" class="formulario__label">Contraseña</label>
+                        <div class="formulario__grupo-input">
+                            <input type="password" class="formulario__input" name="password" id="password" required>
+                        </div>
+                    </div>
+                    <div class="formulario__grupo">
+                        <label class="formulario__label">
+                            <input type="checkbox" name="remember" class="formulario__checkbox"> Recordarme
+                        </label>
+                    </div>
+                    <div class="formulario__grupo">
+                        <button type="submit" class="formulario__btn">INICIAR SESIÓN</button>
+                    </div>
+                </form>
+                <div class="form-footer">
+                    <a href="#">¿Nuevo usuario? Regístrate</a>
+                    <a href="#">¿Olvidaste tu contraseña?</a>
+                </div>
+            </div>
+        </div>
+        <div class="welcome-container">
+            <div class="logo">
+                <img src="{% static 'img/logoPanaderia.png' %}" alt="" width="300" height="300" id="logoLogin">
+                <h1>Bienvenido a nuestro sistema de gestión</h1>
+                <p>Optimiza tus procesos de panadería con nuestra plataforma integral. Desde el control de inventario hasta la gestión de pedidos, estamos aquí para hacer tu negocio más eficiente.</p>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
